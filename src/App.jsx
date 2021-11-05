@@ -8,7 +8,7 @@ import {
 import HeroPage from "./HeroPage";
 import Hero from "./Hero";
 import HeroList from "./HeroList";
-import { apiGetHeroes } from "../api";
+import { apiGetHeroes } from "./api";
 
 function App() {
   const [dataList, setDataList] = useState([]);

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, memo } from "react";
-import { apiGetProfile, apiModifyProfile } from "../../api";
+import { apiGetProfile, apiModifyProfile } from "../api";
 import { makeStyles } from "@material-ui/core";
 import { errMsgSend, successed } from "./const";
 import ProfileItem from "./ProfileItem";
