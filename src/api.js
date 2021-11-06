@@ -4,5 +4,4 @@ const instance = axios.create({
 });
 export const apiGetHeroes = () => instance.get("/heroes");
 export const apiGetProfile = (id) => instance.get("/heroes/" + id + "/profile");
-export const apiModifyProfile = (id, data) =>
-  instance.patch(`/heroes/${id}/profile`, data);
+export const apiModifyProfile = (id, data) => instance.patch(`/heroes/${id}/profile`, data);

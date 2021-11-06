@@ -1,21 +1,16 @@
 import React, { useState, useEffect, memo } from "react";
 import { apiGetProfile, apiModifyProfile } from "../api";
 import { makeStyles } from "@material-ui/core";
-import { errMsgSend, successed } from "./const";
+import { disabledSend, successed, noChanges } from "./const";
 import ProfileItem from "./ProfileItem";
-import Button from "@material-ui/core/Button";
+import { Slide, Snackbar, Button } from '@material-ui/core';
 
 const useStyle = makeStyles((theme) => ({
   content: {
     display: "flex",
-    border: "1px solid red",
     alignItems: "flex-end",
     justifyContent: "space-between",
     flexWrap: "wrap"
-  },
-  msg: {
-    display: "block",
-    height: "40px"
   },
   loading: {
     justifyContent: "space-between",
@@ -50,8 +45,14 @@ const HeroPage = (props) => {
   const [point, setPoint] = useState(0);
   const [disable, setDisabled] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [msg, setMsg] = useState("");
-
+  const [open, setOpen] = useState(false);
+  const [transition, setTransition] = useState(undefined);
+  const [message, setMessage] = useState('')
+  const hasChanged = () => {
+    return keyName
+      .map((i) => profileData[i] === modifyData[i])
+      .includes(false)
+  }
   const getProfile = async (heroId) => {
     return await apiGetProfile(heroId)
       .then((res) => res.data)
@@ -67,26 +68,39 @@ const HeroPage = (props) => {
         });
         setIsLoading(false);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        setMessage(err)
+        setOpen(true)
+      });
   };
   const modifyProfile = async () => {
     return await apiModifyProfile(heroId, modifyData)
       .then((res) => res.data)
-      .then(() => textHelper(successed))
-      .catch((err) => console.log(err));
+      .then(() => {
+        setMessage(successed)
+        getProfile(heroId)
+      })
+      .then(() => setOpen(true))
+      .catch((err) => {
+        setMessage(err)
+        setOpen(true)
+      });
   };
-  const textHelper = (text) => {
-    setMsg(text);
-    setTimeout(() => {
-      setMsg("");
-    }, 2500);
-  };
+  function transitionUp(props) {
+    return <Slide {...props} direction="up" />;
+  }
   const handleSubmit = () => {
     if (point !== 0) {
-      textHelper(errMsgSend);
-      return;
+      setMessage(disabledSend)
+      setTransition(() => transitionUp)
+      setOpen(true)
+    } else if (hasChanged()) {
+      modifyProfile()
+
+    } else {
+      setMessage(noChanges)
+      setOpen(true)
     }
-    modifyProfile();
   };
   useEffect(() => {
     getProfile(heroId);
@@ -98,8 +112,6 @@ const HeroPage = (props) => {
       setDisabled(false);
     }
   }, [point]);
-  // TODO: rm when the end
-  console.log("modifyData", modifyData);
   const skeleton = Array.from({ length: 4 });
   return (
     <div className={classes.content}>
@@ -130,16 +142,21 @@ const HeroPage = (props) => {
       </div>
       <div className={classes.rightContent}>
         <span>剩餘點數: {point} 點</span>
-        <p className={classes.msg}>{msg}</p>
         <Button
           className={classes.submitBtn}
           onClick={handleSubmit}
           variant="contained"
-          disabled={point !== 0}
         >
           儲存
         </Button>
       </div>
+      <Snackbar
+        open={open}
+        onClose={() => setOpen(false)}
+        TransitionComponent={transition}
+        message={message}
+        key={transition ? transition.name : ''}
+      />
     </div>
   );
 };
