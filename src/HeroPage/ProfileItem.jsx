@@ -9,6 +9,7 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     background: "rgb(25, 25, 25)",
     border: "1px solid #3e3e3e",
+    borderRadius: "5px",
     padding: "5px",
     margin: "1rem"
   },
