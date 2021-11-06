@@ -3,7 +3,7 @@ import { apiGetProfile, apiModifyProfile } from "../api";
 import { makeStyles } from "@material-ui/core";
 import { disabledSend, successed, noChanges } from "./const";
 import ProfileItem from "./ProfileItem";
-import { Slide, Snackbar, Button } from '@material-ui/core';
+import { Snackbar, Button } from '@material-ui/core';
 import Skeleton from "../component/Skeleton";
 
 const useStyle = makeStyles((theme) => ({
@@ -11,7 +11,10 @@ const useStyle = makeStyles((theme) => ({
     display: "flex",
     alignItems: "flex-end",
     justifyContent: "space-between",
-    flexWrap: "wrap"
+    flexWrap: "wrap",
+    border: '1px solid #a5a5a5',
+    borderRadius: '5px',
+    marginTop: '1rem'
   },
   loading: {
     background: "#3e3e3e",
@@ -28,6 +31,13 @@ const useStyle = makeStyles((theme) => ({
     maxWidth: "150px",
     flexDirection: "column",
     margin: "1rem"
+  },
+  snackbar: {
+    color: '#ff0000',
+    border: '1px solid #ff0000',
+    padding: '5px',
+    borderRadius: '5px',
+    textAlign: 'center',
   }
 }));
 const HeroPage = (props) => {
@@ -40,8 +50,7 @@ const HeroPage = (props) => {
   const [disable, setDisabled] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [open, setOpen] = useState(false);
-  const [transition, setTransition] = useState(undefined);
-  const [message, setMessage] = useState('')
+  const [message, setMessage] = useState('');
   const hasChanged = () => {
     return keyName
       .map((i) => profileData[i] === modifyData[i])
@@ -80,13 +89,9 @@ const HeroPage = (props) => {
         setOpen(true)
       });
   };
-  function transitionUp(props) {
-    return <Slide {...props} direction="up" />;
-  }
   const handleSubmit = () => {
     if (point !== 0) {
       setMessage(disabledSend)
-      setTransition(() => transitionUp)
       setOpen(true)
     } else if (hasChanged()) {
       modifyProfile()
@@ -97,6 +102,7 @@ const HeroPage = (props) => {
     }
   };
   useEffect(() => {
+    setPoint(0);
     getProfile(heroId);
   }, [heroId]);
   useEffect(() => {
@@ -106,10 +112,10 @@ const HeroPage = (props) => {
       setDisabled(false);
     }
   }, [point]);
-  const skeleton = Array.from({ length: 4 });
   return (
     <div className={classes.content}>
       <div>
+        <p style={{ padding: "5px", margin: "1rem" }}>調整能力值</p>
         {isLoading
           ? <Skeleton style={classes.loading} length={4} />
           : keyName.map((obj) => {
@@ -128,7 +134,7 @@ const HeroPage = (props) => {
           })}
       </div>
       <div className={classes.rightContent}>
-        <span>剩餘點數: {point} 點</span>
+        <span style={{ margin: '1rem 0' }}>剩餘點數: {point} 點</span>
         <Button
           onClick={handleSubmit}
           variant="contained"
@@ -139,10 +145,10 @@ const HeroPage = (props) => {
       <Snackbar
         open={open}
         onClose={() => setOpen(false)}
-        TransitionComponent={transition}
-        message={message}
-        key={transition ? transition.name : ''}
-      />
+        autoHideDuration={3000}
+      >
+        <p className={classes.snackbar}>{message}</p>
+      </Snackbar>
     </div>
   );
 };
