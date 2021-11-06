@@ -1,6 +1,7 @@
 import React, { useState, useEffect, memo } from "react";
 import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core";
+import { details } from './const';
 const useStyles = makeStyles((theme) => ({
   container: {
     display: "flex",
@@ -41,12 +42,6 @@ const ProfileItem = ({ disabled, strName, initNum, onChange }) => {
     onChange(
       minus ? { type: -1, total: point - 1 } : { type: +1, total: point + 1 }
     );
-  };
-  const details = {
-    str: "力量",
-    agi: "敏捷",
-    int: "智力",
-    luk: "幸運"
   };
   return (
     <>

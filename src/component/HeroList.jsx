@@ -65,7 +65,7 @@ const useStyle = makeStyles((theme) => ({
     height: "240px"
   },
 }));
-const HeroList = ({ data, val }) => {
+const HeroList = ({ data }) => {
   const classes = useStyle();
   const [isLoading, setIsloading] = useState(true);
   const [selected, setSelected] = useState('');

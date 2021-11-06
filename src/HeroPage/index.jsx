@@ -95,7 +95,6 @@ const HeroPage = (props) => {
       setOpen(true)
     } else if (hasChanged()) {
       modifyProfile()
-
     } else {
       setMessage(noChanges)
       setOpen(true)
