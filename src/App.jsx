@@ -7,12 +7,11 @@ import {
 } from "react-router-dom";
 import HeroPage from "./HeroPage";
 import Hero from "./Hero";
-import HeroList from "./HeroList";
+import HeroList from "./component/HeroList";
 import { apiGetHeroes } from "./api";
 
 function App() {
   const [dataList, setDataList] = useState([]);
-  const [value, setValue] = useState(0);
   const getData = async () => {
     return await apiGetHeroes()
       .then((res) => res.data)
@@ -23,21 +22,22 @@ function App() {
     getData();
   }, []);
   return (
-    <Router>
-      <HeroList data={dataList} val={value} />
-      <Switch>
-        <Route path="/heroes" component={Hero} exact strict />
-        <Route
-          path="/heroes/:heroId"
-          component={(props) => {
-            setValue(props.match.params.heroId);
-            return <HeroPage {...props}></HeroPage>;
-          }}
-          exatrict
-        />
-        <Redirect to="/heroes" />
-      </Switch>
-    </Router>
+    <div style={{ maxWidth: '1080px' }}>
+      <Router>
+        <HeroList data={dataList} />
+        <Switch>
+          <Route path="/heroes" component={Hero} exact strict />
+          <Route
+            path="/heroes/:heroId"
+            component={(props) => {
+              return <HeroPage {...props}></HeroPage>;
+            }}
+            exatrict
+          />
+          <Redirect to="/heroes" />
+        </Switch>
+      </Router>
+    </div>
   );
 }
 export default App;

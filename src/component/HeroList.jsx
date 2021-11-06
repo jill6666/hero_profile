@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/core";
-import Skeleton from "./component/Skeleton";
+import Skeleton from "./Skeleton";
 
 const useStyle = makeStyles((theme) => ({
   body: {
@@ -67,7 +67,8 @@ const useStyle = makeStyles((theme) => ({
 }));
 const HeroList = ({ data, val }) => {
   const classes = useStyle();
-  const [isLoading, setIsloading] = useState(true)
+  const [isLoading, setIsloading] = useState(true);
+  const [selected, setSelected] = useState('');
   useEffect(() => {
     if (data.length) setIsloading(false)
   }, [data])
@@ -77,12 +78,12 @@ const HeroList = ({ data, val }) => {
         ? <Skeleton style={classes.skeleton} length={4} />
         : data.map((obj) => {
           const { id, name, image } = obj;
-          const selected = val === id;
           return (
             <Link
+              onClick={() => setSelected(id)}
               key={id}
               to={`/heroes/${id}`}
-              className={!selected ? classes.cardItem : classes.selectedItem}
+              className={selected === id ? classes.selectedItem : classes.cardItem}
             >
               <img src={image} alt={name} className={classes.image} />
               <p className={classes.name}>{name}</p>
