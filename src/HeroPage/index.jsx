@@ -4,6 +4,7 @@ import { makeStyles } from "@material-ui/core";
 import { disabledSend, successed, noChanges } from "./const";
 import ProfileItem from "./ProfileItem";
 import { Slide, Snackbar, Button } from '@material-ui/core';
+import Skeleton from "../component/Skeleton";
 
 const useStyle = makeStyles((theme) => ({
   content: {
@@ -13,8 +14,6 @@ const useStyle = makeStyles((theme) => ({
     flexWrap: "wrap"
   },
   loading: {
-    justifyContent: "space-between",
-    alignItems: "center",
     background: "#3e3e3e",
     borderRadius: "5px",
     padding: "5px",
@@ -29,13 +28,8 @@ const useStyle = makeStyles((theme) => ({
     maxWidth: "150px",
     flexDirection: "column",
     margin: "1rem"
-  },
-  submitBtn: {}
+  }
 }));
-const Loading = () => {
-  const classes = useStyle();
-  return <div className={classes.loading}></div>;
-};
 const HeroPage = (props) => {
   const classes = useStyle();
   const heroId = props.match.params.heroId;
@@ -116,16 +110,9 @@ const HeroPage = (props) => {
   return (
     <div className={classes.content}>
       <div>
-        {isLoading &&
-          skeleton.map((i, index) => {
-            return (
-              <div key={index}>
-                <Loading />
-              </div>
-            );
-          })}
-        {!isLoading &&
-          keyName.map((obj) => {
+        {isLoading
+          ? <Skeleton style={classes.loading} length={4} />
+          : keyName.map((obj) => {
             return (
               <ProfileItem
                 key={obj}
@@ -143,7 +130,6 @@ const HeroPage = (props) => {
       <div className={classes.rightContent}>
         <span>剩餘點數: {point} 點</span>
         <Button
-          className={classes.submitBtn}
           onClick={handleSubmit}
           variant="contained"
         >

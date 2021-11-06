@@ -1,6 +1,7 @@
-import React, { memo } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/core";
+import Skeleton from "./component/Skeleton";
 
 const useStyle = makeStyles((theme) => ({
   body: {
@@ -54,15 +55,27 @@ const useStyle = makeStyles((theme) => ({
   name: {
     lineHeight: "40px",
     fontWeight: "700"
-  }
+  },
+  skeleton: {
+    background: "#3e3e3e",
+    borderRadius: "5px",
+    margin: "5px",
+    display: "block",
+    minWidth: "200px",
+    height: "240px"
+  },
 }));
 const HeroList = ({ data, val }) => {
   const classes = useStyle();
+  const [isLoading, setIsloading] = useState(true)
+  useEffect(() => {
+    if (data.length) setIsloading(false)
+  }, [data])
   return (
-    <>
-      <Link to="/heroes">Home</Link>
-      <div className={classes.cardWrap}>
-        {data.map((obj) => {
+    <div className={classes.cardWrap}>
+      {isLoading
+        ? <Skeleton style={classes.skeleton} length={4} />
+        : data.map((obj) => {
           const { id, name, image } = obj;
           const selected = val === id;
           return (
@@ -76,9 +89,8 @@ const HeroList = ({ data, val }) => {
             </Link>
           );
         })}
-      </div>
-    </>
+    </div>
   );
 };
 
-export default memo(HeroList);
+export default HeroList;
