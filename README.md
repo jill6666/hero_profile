@@ -63,3 +63,7 @@ The problem is to set state in `<Route path="/heroes/:heroId"/>` to update value
 (/src/App.jsx)
 <img width="972" alt="截圖 2021-11-06 下午4 51 35" src="https://user-images.githubusercontent.com/73696750/140603912-889f1f77-ea1e-4e7a-a46d-0b71aac94de7.png">
 solution: Remove set state function and handle state in another way like the image above.
+<br/>
+## Roadmap
+ - [ ] Deploy on Github Pages or Heroku.
+ - [ ] Provide light/dark theme feature.
