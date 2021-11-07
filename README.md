@@ -1,6 +1,5 @@
 
 # hero_profile
-<img width="1424" alt="截圖 2021-11-06 下午5 04 06" src="https://user-images.githubusercontent.com/73696750/140604268-97d15e91-dba3-4cf7-aff7-b71e19d2fc7e.png">
 
 ## Description
 See how powerful Heroes is, and look at yourself. <br/>
